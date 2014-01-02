@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.7-build.2039+sha.4f57236
+ * @license AngularJS v1.2.7-build.2040+sha.884ef0d
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2039+sha.4f57236/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2040+sha.884ef0d/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11623,7 +11623,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.7-build.2039+sha.4f57236',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.7-build.2040+sha.884ef0d',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 7,
@@ -21323,6 +21323,7 @@ function $RootScopeProvider(){
 
         return function() {
           arrayRemove(array, watcher);
+          lastDirtyWatch = null;
         };
       },
 
