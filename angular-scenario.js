@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.7-build.2041+sha.53ec33f
+ * @license AngularJS v1.2.7-build.2042+sha.c9705b7
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2041+sha.53ec33f/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2042+sha.c9705b7/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11623,7 +11623,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.7-build.2041+sha.53ec33f',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.7-build.2042+sha.c9705b7',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 7,
@@ -28895,7 +28895,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
     $$tlb: true,
     link: function($scope, $element, $attr, ctrl, $transclude){
         var expression = $attr.ngRepeat;
-        var match = expression.match(/^\s*(.+)\s+in\s+([\r\n\s\S]*?)\s*(\s+track\s+by\s+(.+)\s*)?$/),
+        var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/),
           trackByExp, trackByExpGetter, trackByIdExpFn, trackByIdArrayFn, trackByIdObjFn,
           lhs, rhs, valueIdentifier, keyIdentifier,
           hashFnLocals = {$id: hashKey};
@@ -28907,7 +28907,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
 
         lhs = match[1];
         rhs = match[2];
-        trackByExp = match[4];
+        trackByExp = match[3];
 
         if (trackByExp) {
           trackByExpGetter = $parse(trackByExp);
