@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.7-build.2042+sha.c9705b7
+ * @license AngularJS v1.2.7-build.2043+sha.760f2fb
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2042+sha.c9705b7/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2043+sha.760f2fb/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11623,7 +11623,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.7-build.2042+sha.c9705b7',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.7-build.2043+sha.760f2fb',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 7,
@@ -14099,7 +14099,7 @@ function Browser(window, document, $log, $sniffer) {
    */
   self.baseHref = function() {
     var href = baseElement.attr('href');
-    return href ? href.replace(/^https?\:\/\/[^\/]*/, '') : '';
+    return href ? href.replace(/^(https?\:)?\/\/[^\/]*/, '') : '';
   };
 
   //////////////////////////////////////////////////////////////
