@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.8-build.2093+sha.1c045f1
+ * @license AngularJS v1.2.8-build.2094+sha.b6c42d5
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.8-build.2093+sha.1c045f1/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.8-build.2094+sha.b6c42d5/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11625,7 +11625,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.8-build.2093+sha.1c045f1',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.8-build.2094+sha.b6c42d5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 8,
@@ -27595,13 +27595,13 @@ var ngControllerDirective = [function() {
       </button>
       count: {{count}}
      </doc:source>
-     <doc:scenario>
+     <doc:protractor>
        it('should check ng-click', function() {
-         expect(binding('count')).toBe('0');
-         element('.doc-example-live :button').click();
-         expect(binding('count')).toBe('1');
+         expect(element(by.binding('count')).getText()).toMatch('0');
+         element(by.css('.doc-example-live button')).click();
+         expect(element(by.binding('count')).getText()).toMatch('1');
        });
-     </doc:scenario>
+     </doc:protractor>
    </doc:example>
  */
 /*
