@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.8
+ * @license AngularJS v1.2.9-build.2111+sha.5f937e5
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.8/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.9-build.2111+sha.5f937e5/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11625,11 +11625,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.8',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.9-build.2111+sha.5f937e5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
-  dot: 8,
-  codeName: 'interdimensional-cartography'
+  dot: 9,
+  codeName: 'enchanted-articulacy'
 };
 
 
