@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.9-build.2127+sha.2a35863
+ * @license AngularJS v1.2.9-build.2128+sha.e1cfb19
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.9-build.2127+sha.2a35863/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.9-build.2128+sha.e1cfb19/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11626,7 +11626,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.9-build.2127+sha.2a35863',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.9-build.2128+sha.e1cfb19',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 9,
@@ -16738,9 +16738,9 @@ function $HttpProvider() {
       common: {
         'Accept': 'application/json, text/plain, */*'
       },
-      post:   CONTENT_TYPE_APPLICATION_JSON,
-      put:    CONTENT_TYPE_APPLICATION_JSON,
-      patch:  CONTENT_TYPE_APPLICATION_JSON
+      post:   copy(CONTENT_TYPE_APPLICATION_JSON),
+      put:    copy(CONTENT_TYPE_APPLICATION_JSON),
+      patch:  copy(CONTENT_TYPE_APPLICATION_JSON)
     },
 
     xsrfCookieName: 'XSRF-TOKEN',
@@ -16951,7 +16951,7 @@ function $HttpProvider() {
      * to `push` or `unshift` a new transformation function into the transformation chain. You can
      * also decide to completely override any default transformations by assigning your
      * transformation functions to these properties directly without the array wrapper.  These defaults
-     * are again available on the $http factory at run-time, which may be useful if you have run-time 
+     * are again available on the $http factory at run-time, which may be useful if you have run-time
      * services you wish to be involved in your transformations.
      *
      * Similarly, to locally override the request/response transforms, augment the
