@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.10-build.2160+sha.928d000
+ * @license AngularJS v1.2.10-build.2161+sha.90e60d2
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.10-build.2160+sha.928d000/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.10-build.2161+sha.90e60d2/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11626,7 +11626,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.10-build.2160+sha.928d000',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.10-build.2161+sha.90e60d2',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 10,
@@ -20504,9 +20504,9 @@ function $ParseProvider() {
  * asynchronous programming what `try`, `catch` and `throw` keywords are to synchronous programming.
  *
  * <pre>
- *   // for the purpose of this example let's assume that variables `$q` and `scope` are
- *   // available in the current lexical scope (they could have been injected or passed in).
- *
+ *   // for the purpose of this example let's assume that variables `$q`, `scope` and `okToGreet`
+ *   // are available in the current lexical scope (they could have been injected or passed in).
+ * 
  *   function asyncGreet(name) {
  *     var deferred = $q.defer();
  *
