@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.11-build.2185+sha.4f735b0
+ * @license AngularJS v1.2.11-build.2186+sha.766b3d5
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.11-build.2185+sha.4f735b0/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.11-build.2186+sha.766b3d5/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11626,7 +11626,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.11-build.2185+sha.4f735b0',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.11-build.2186+sha.766b3d5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 11,
@@ -29767,7 +29767,7 @@ var ngOptionsMinErr = minErr('ngOptions');
  * option. See example below for demonstration.
  *
  * <div class="alert alert-warning">
- * **Note:** `ngOptions` provides iterator facility for `<option>` element which should be used instead
+ * **Note:** `ngOptions` provides an iterator facility for the `<option>` element which should be used instead
  * of {@link ng.directive:ngRepeat ngRepeat} when you want the
  * `select` model to be bound to a non-string value. This is because an option element can only
  * be bound to string values at present.
