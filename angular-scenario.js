@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.11-build.2191+sha.7a78aed
+ * @license AngularJS v1.2.11-build.2192+sha.e2173f9
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.11-build.2191+sha.7a78aed/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.11-build.2192+sha.e2173f9/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11626,7 +11626,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.11-build.2191+sha.7a78aed',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.11-build.2192+sha.e2173f9',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 11,
@@ -13200,17 +13200,16 @@ function annotate(fn) {
  * Here is an example of registering a service using
  * {@link AUTO.$provide#methods_service $provide.service(class)}.
  * <pre>
- *   $provide.service('ping', ['$http', function($http) {
- *     var Ping = function() {
- *       this.$http = $http;
- *     };
+ *   var Ping = function($http) {
+ *     this.$http = $http;
+ *   };
+ * 
+ *   Ping.$inject = ['$http'];
  *   
- *     Ping.prototype.send = function() {
- *       return this.$http.get('/ping');
- *     }; 
- *   
- *     return Ping;
- *   }]);
+ *   Ping.prototype.send = function() {
+ *     return this.$http.get('/ping');
+ *   };
+ *   $provide.service('ping', Ping);
  * </pre>
  * You would then inject and use this service like this:
  * <pre>
