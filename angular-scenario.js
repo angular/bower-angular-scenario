@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.13-build.2261+sha.a3846ab
+ * @license AngularJS v1.2.13-build.2262+sha.a9fcb0d
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.13-build.2261+sha.a3846ab/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.13-build.2262+sha.a9fcb0d/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11628,7 +11628,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.13-build.2261+sha.a3846ab',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.13-build.2262+sha.a9fcb0d',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 13,
@@ -25901,7 +25901,8 @@ var inputType = {
   'hidden': noop,
   'button': noop,
   'submit': noop,
-  'reset': noop
+  'reset': noop,
+  'file': noop
 };
 
 // A helper function to call $setValidity and return the value / undefined,
