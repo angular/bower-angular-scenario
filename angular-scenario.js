@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.13-build.2262+sha.a9fcb0d
+ * @license AngularJS v1.2.13-build.2263+sha.31c450b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.13-build.2262+sha.a9fcb0d/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.13-build.2263+sha.31c450b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11628,7 +11628,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.13-build.2262+sha.a9fcb0d',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.13-build.2263+sha.31c450b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 13,
@@ -14993,7 +14993,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
   var hasDirectives = {},
       Suffix = 'Directive',
       COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w\-_]+)\s+(.*)$/,
-      CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/;
+      CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/,
+      TABLE_CONTENT_REGEXP = /^<\s*(tr|th|td|tbody)(\s+[^>]*)?>/i;
 
   // Ref: http://developers.whatwg.org/webappapis.html#event-handler-idl-attributes
   // The assumption is that future DOM event attribute names will begin with
@@ -15734,9 +15735,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
           if (directive.replace) {
             replaceDirective = directive;
-            $template = jqLite('<div>' +
-                                 trim(directiveValue) +
-                               '</div>').contents();
+            $template = directiveTemplateContents(directiveValue);
             compileNode = $template[0];
 
             if ($template.length != 1 || compileNode.nodeType !== 1) {
@@ -16135,6 +16134,28 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     }
 
 
+    function directiveTemplateContents(template) {
+      var type;
+      template = trim(template);
+      if ((type = TABLE_CONTENT_REGEXP.exec(template))) {
+        type = type[1].toLowerCase();
+        var table = jqLite('<table>' + template + '</table>'),
+            tbody = table.children('tbody'),
+            leaf = /(td|th)/.test(type) && table.find('tr');
+        if (tbody.length && type !== 'tbody') {
+          table = tbody;
+        }
+        if (leaf && leaf.length) {
+          table = leaf;
+        }
+        return table.contents();
+      }
+      return jqLite('<div>' +
+                      template +
+                    '</div>').contents();
+    }
+
+
     function compileTemplateUrl(directives, $compileNode, tAttrs,
         $rootElement, childTranscludeFn, preLinkFns, postLinkFns, previousCompileContext) {
       var linkQueue = [],
@@ -16159,7 +16180,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           content = denormalizeTemplate(content);
 
           if (origAsyncDirective.replace) {
-            $template = jqLite('<div>' + trim(content) + '</div>').contents();
+            $template = directiveTemplateContents(content);
             compileNode = $template[0];
 
             if ($template.length != 1 || compileNode.nodeType !== 1) {
