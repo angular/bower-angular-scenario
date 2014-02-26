@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.14-build.2327+sha.c9245cf
+ * @license AngularJS v1.2.14-build.2328+sha.e988199
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.14-build.2327+sha.c9245cf/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.14-build.2328+sha.e988199/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11672,7 +11672,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.14-build.2327+sha.c9245cf',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.14-build.2328+sha.e988199',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 14,
@@ -28385,7 +28385,7 @@ var ngIfDirective = ['$animate', function($animate) {
     restrict: 'A',
     $$tlb: true,
     link: function ($scope, $element, $attr, ctrl, $transclude) {
-        var block, childScope;
+        var block, childScope, previousElements;
         $scope.$watch($attr.ngIf, function ngIfWatchAction(value) {
 
           if (toBoolean(value)) {
@@ -28403,14 +28403,19 @@ var ngIfDirective = ['$animate', function($animate) {
               });
             }
           } else {
-
-            if (childScope) {
+            if(previousElements) {
+              previousElements.remove();
+              previousElements = null;
+            }
+            if(childScope) {
               childScope.$destroy();
               childScope = null;
             }
-
-            if (block) {
-              $animate.leave(getBlockElements(block.clone));
+            if(block) {
+              previousElements = getBlockElements(block.clone);
+              $animate.leave(previousElements, function() {
+                previousElements = null;
+              });
               block = null;
             }
           }
@@ -28596,15 +28601,23 @@ var ngIncludeDirective = ['$http', '$templateCache', '$anchorScroll', '$animate'
       return function(scope, $element, $attr, ctrl, $transclude) {
         var changeCounter = 0,
             currentScope,
+            previousElement,
             currentElement;
 
         var cleanupLastIncludeContent = function() {
-          if (currentScope) {
+          if(previousElement) {
+            previousElement.remove();
+            previousElement = null;
+          }
+          if(currentScope) {
             currentScope.$destroy();
             currentScope = null;
           }
           if(currentElement) {
-            $animate.leave(currentElement);
+            $animate.leave(currentElement, function() {
+              previousElement = null;
+            });
+            previousElement = currentElement;
             currentElement = null;
           }
         };
@@ -29885,12 +29898,31 @@ var ngSwitchDirective = ['$animate', function($animate) {
       var watchExpr = attr.ngSwitch || attr.on,
           selectedTranscludes,
           selectedElements,
+          previousElements,
           selectedScopes = [];
 
       scope.$watch(watchExpr, function ngSwitchWatchAction(value) {
-        for (var i= 0, ii=selectedScopes.length; i<ii; i++) {
-          selectedScopes[i].$destroy();
-          $animate.leave(selectedElements[i]);
+        var i, ii = selectedScopes.length;
+        if(ii > 0) {
+          if(previousElements) {
+            for (i = 0; i < ii; i++) {
+              previousElements[i].remove();
+            }
+            previousElements = null;
+          }
+
+          previousElements = [];
+          for (i= 0; i<ii; i++) {
+            var selected = selectedElements[i];
+            selectedScopes[i].$destroy();
+            previousElements[i] = selected;
+            $animate.leave(selected, function() {
+              previousElements.splice(i, 1);
+              if(previousElements.length === 0) {
+                previousElements = null;
+              }
+            });
+          }
         }
 
         selectedElements = [];
