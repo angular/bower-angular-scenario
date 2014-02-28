@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.14-build.2347+sha.0c8a88b
+ * @license AngularJS v1.2.14-build.2348+sha.0d034a9
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.14-build.2347+sha.0c8a88b/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.14-build.2348+sha.0d034a9/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11672,7 +11672,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.14-build.2347+sha.0c8a88b',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.14-build.2348+sha.0d034a9',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 14,
@@ -25450,10 +25450,11 @@ function FormController(element, attrs, $scope, $animate) {
  *
  * ## Animation Hooks
  *
- * Animations in ngForm are triggered when any of the associated CSS classes are added and removed. These
- * classes are: `.pristine`, `.dirty`, `.invalid` and `.valid` as well as any other validations that
- * are performed within the form. Animations in ngForm are similar to how they work in ngClass and
- * animations can be hooked into using CSS transitions, keyframes as well as JS animations.
+ * Animations in ngForm are triggered when any of the associated CSS classes are added and removed.
+ * These classes are: `.ng-pristine`, `.ng-dirty`, `.ng-invalid` and `.ng-valid` as well as any
+ * other validations that are performed within the form. Animations in ngForm are similar to how
+ * they work in ngClass and animations can be hooked into using CSS transitions, keyframes as well
+ * as JS animations.
  *
  * The following example shows a simple way to utilize CSS transitions to style a form element
  * that has been rendered as invalid after it has been validated:
@@ -26849,8 +26850,8 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  * ## Animation Hooks
  *
  * Animations within models are triggered when any of the associated CSS classes are added and removed
- * on the input element which is attached to the model. These classes are: `.pristine`, `.dirty`,
- * `.invalid` and `.valid` as well as any other validations that are performed on the model itself.
+ * on the input element which is attached to the model. These classes are: `.ng-pristine`, `.ng-dirty`,
+ * `.ng-invalid` and `.ng-valid` as well as any other validations that are performed on the model itself.
  * The animations that are triggered within ngModel are similar to how they work in ngClass and
  * animations can be hooked into using CSS transitions, keyframes as well as JS animations.
  *
