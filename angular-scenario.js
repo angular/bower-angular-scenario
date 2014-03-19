@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.3.0-build.2480+sha.fb6062f
+ * @license AngularJS v1.3.0-build.2481+sha.58f5da8
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2480+sha.fb6062f/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2481+sha.58f5da8/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11711,7 +11711,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.2480+sha.fb6062f',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.2481+sha.58f5da8',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -20740,7 +20740,7 @@ function $ParseProvider() {
  *
  *   Because `finally` is a reserved word in JavaScript and reserved keywords are not supported as
  *   property names by ES3, you'll need to invoke the method like `promise['finally'](callback)` to
- *   make your code IE8 compatible.
+ *   make your code IE8 and Android 2.x compatible.
  *
  * # Chaining promises
  *
