@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.3.0-build.2481+sha.58f5da8
+ * @license AngularJS v1.3.0-build.2482+sha.4d4da55
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2481+sha.58f5da8/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2482+sha.4d4da55/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11711,7 +11711,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.2481+sha.58f5da8',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.2482+sha.4d4da55',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -16738,6 +16738,22 @@ function $ControllerProvider() {
  *
  * @description
  * A {@link angular.element jQuery or jqLite} wrapper for the browser's `window.document` object.
+ *
+ * @example
+   <example>
+     <file name="index.html">
+       <div ng-controller="MainCtrl">
+         <p>$document title: <b ng-bind="title"></b></p>
+         <p>window.document title: <b ng-bind="windowTitle"></b></p>
+       </div>
+     </file>
+     <file name="script.js">
+       function MainCtrl($scope, $document) {
+         $scope.title = $document[0].title;
+         $scope.windowTitle = angular.element(window.document)[0].title;
+       }
+     </file>
+   </example>
  */
 function $DocumentProvider(){
   this.$get = ['$window', function(window){
