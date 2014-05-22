@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.3.0-build.2751+sha.6e2ab81
+ * @license AngularJS v1.3.0-build.2752+sha.f694951
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2751+sha.6e2ab81/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2752+sha.f694951/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10086,7 +10086,7 @@ function isArrayLike(obj) {
    ```js
      var values = {name: 'misko', gender: 'male'};
      var log = [];
-     angular.forEach(values, function(value, key){
+     angular.forEach(values, function(value, key) {
        this.push(key + ': ' + value);
      }, log);
      expect(log).toEqual(['name: misko', 'gender: male']);
@@ -10100,7 +10100,7 @@ function isArrayLike(obj) {
 function forEach(obj, iterator, context) {
   var key;
   if (obj) {
-    if (isFunction(obj)){
+    if (isFunction(obj)) {
       for (key in obj) {
         // Need to check if hasOwnProperty exists,
         // as on IE8 the result of querySelectorAll is an object without a hasOwnProperty function
@@ -10213,9 +10213,9 @@ function setHashKey(obj, h) {
  */
 function extend(dst) {
   var h = dst.$$hashKey;
-  forEach(arguments, function(obj){
+  forEach(arguments, function(obj) {
     if (obj !== dst) {
-      forEach(obj, function(value, key){
+      forEach(obj, function(value, key) {
         dst[key] = value;
       });
     }
@@ -10364,7 +10364,7 @@ function isNumber(value){return typeof value === 'number';}
  * @param {*} value Reference to check.
  * @returns {boolean} True if `value` is a `Date`.
  */
-function isDate(value){
+function isDate(value) {
   return toString.call(value) === '[object Date]';
 }
 
@@ -10482,7 +10482,7 @@ function isElement(node) {
  * @param str 'key1,key2,...'
  * @returns {object} in the form of {key1:true, key2:true, ...}
  */
-function makeMap(str){
+function makeMap(str) {
   var obj = {}, items = str.split(","), i;
   for ( i = 0; i < items.length; i++ )
     obj[ items[i] ] = true;
@@ -10529,7 +10529,7 @@ function size(obj, ownPropsOnly) {
 
   if (isArray(obj) || isString(obj)) {
     return obj.length;
-  } else if (isObject(obj)){
+  } else if (isObject(obj)) {
     for (key in obj)
       if (!ownPropsOnly || obj.hasOwnProperty(key))
         count++;
@@ -10628,7 +10628,7 @@ function isLeafNode (node) {
  </file>
  </example>
  */
-function copy(source, destination){
+function copy(source, destination) {
   if (isWindow(source) || isScope(source)) {
     throw ngMinErr('cpws',
       "Can't copy! Making copies of Window or Scope instances is not supported.");
@@ -10657,7 +10657,7 @@ function copy(source, destination){
       }
     } else {
       var h = destination.$$hashKey;
-      forEach(destination, function(value, key){
+      forEach(destination, function(value, key) {
         delete destination[key];
       });
       for ( var key in source) {
@@ -10931,7 +10931,7 @@ function tryDecodeURIComponent(value) {
  */
 function parseKeyValue(/**string*/keyValue) {
   var obj = {}, key_value, key;
-  forEach((keyValue || "").split('&'), function(keyValue){
+  forEach((keyValue || "").split('&'), function(keyValue) {
     if ( keyValue ) {
       key_value = keyValue.split('=');
       key = tryDecodeURIComponent(key_value[0]);
@@ -11293,7 +11293,7 @@ function bootstrap(element, modules, config) {
 }
 
 var SNAKE_CASE_REGEXP = /[A-Z]/g;
-function snake_case(name, separator){
+function snake_case(name, separator) {
   separator = separator || '_';
   return name.replace(SNAKE_CASE_REGEXP, function(letter, pos) {
     return (pos ? separator : '') + letter.toLowerCase();
@@ -11829,7 +11829,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.2751+sha.6e2ab81',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.2752+sha.f694951',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
