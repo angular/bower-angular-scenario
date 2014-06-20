@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.3.0-build.2843+sha.ebff4c1
+ * @license AngularJS v1.3.0-build.2844+sha.dafb8a3
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2843+sha.ebff4c1/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.2844+sha.dafb8a3/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10486,12 +10486,14 @@ function makeMap(str) {
 if (msie < 9) {
   nodeName_ = function(element) {
     element = element.nodeName ? element : element[0];
-    return (element.scopeName && element.scopeName != 'HTML')
-      ? uppercase(element.scopeName + ':' + element.nodeName) : element.nodeName;
+    return lowercase(
+      (element.scopeName && element.scopeName != 'HTML')
+      ? element.scopeName + ':' + element.nodeName : element.nodeName
+    );
   };
 } else {
   nodeName_ = function(element) {
-    return element.nodeName ? element.nodeName : element[0].nodeName;
+    return lowercase(element.nodeName ? element.nodeName : element[0].nodeName);
   };
 }
 
@@ -10554,10 +10556,10 @@ function arrayRemove(array, value) {
 
 function isLeafNode (node) {
   if (node) {
-    switch (node.nodeName) {
-    case "OPTION":
-    case "PRE":
-    case "TITLE":
+    switch (nodeName_(node)) {
+    case "option":
+    case "pre":
+    case "title":
       return true;
     }
   }
@@ -11863,7 +11865,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.2843+sha.ebff4c1',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.2844+sha.dafb8a3',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -12480,7 +12482,7 @@ forEach('multiple,selected,checked,disabled,readOnly,required,open'.split(','), 
 });
 var BOOLEAN_ELEMENTS = {};
 forEach('input,select,option,textarea,button,form,details'.split(','), function(value) {
-  BOOLEAN_ELEMENTS[uppercase(value)] = true;
+  BOOLEAN_ELEMENTS[value] = true;
 });
 var ALIASED_ATTR = {
   'ngMinlength' : 'minlength',
@@ -12493,7 +12495,7 @@ function getBooleanAttrName(element, name) {
   var booleanAttr = BOOLEAN_ATTR[name.toLowerCase()];
 
   // booleanAttr is here twice to minimize DOM access
-  return booleanAttr && BOOLEAN_ELEMENTS[element.nodeName] && booleanAttr;
+  return booleanAttr && BOOLEAN_ELEMENTS[nodeName_(element)] && booleanAttr;
 }
 
 function getAliasedAttrName(element, name) {
@@ -12603,7 +12605,7 @@ forEach({
 
   val: function(element, value) {
     if (isUndefined(value)) {
-      if (nodeName_(element) === 'SELECT' && element.multiple) {
+      if (element.multiple && nodeName_(element) === 'select') {
         var result = [];
         forEach(element.options, function (option) {
           if (option.selected) {
@@ -13937,7 +13939,7 @@ function $AnchorScrollProvider() {
     function getFirstAnchor(list) {
       var result = null;
       forEach(list, function(element) {
-        if (!result && lowercase(element.nodeName) === 'a') result = element;
+        if (!result && nodeName_(element) === 'a') result = element;
       });
       return result;
     }
@@ -15762,8 +15764,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         nodeName = nodeName_(this.$$element);
 
         // sanitize a[href] and img[src] values
-        if ((nodeName === 'A' && key === 'href') ||
-            (nodeName === 'IMG' && key === 'src')) {
+        if ((nodeName === 'a' && key === 'href') ||
+            (nodeName === 'img' && key === 'src')) {
           this[key] = value = $$sanitizeUri(value, key === 'src');
         }
 
@@ -16033,7 +16035,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         case 1: /* Element */
           // use the node name: <directive>
           addDirective(directives,
-              directiveNormalize(nodeName_(node).toLowerCase()), 'E', maxPriority, ignoreDirective);
+              directiveNormalize(nodeName_(node)), 'E', maxPriority, ignoreDirective);
 
           // iterate over the attributes
           for (var attr, name, nName, ngAttrName, value, isNgAttr, nAttrs = node.attributes,
@@ -16900,8 +16902,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       var tag = nodeName_(node);
       // maction[xlink:href] can source SVG.  It's not limited to <maction>.
       if (attrNormalizedName == "xlinkHref" ||
-          (tag == "FORM" && attrNormalizedName == "action") ||
-          (tag != "IMG" && (attrNormalizedName == "src" ||
+          (tag == "form" && attrNormalizedName == "action") ||
+          (tag != "img" && (attrNormalizedName == "src" ||
                             attrNormalizedName == "ngSrc"))) {
         return $sce.RESOURCE_URL;
       }
@@ -16915,7 +16917,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       if (!interpolateFn) return;
 
 
-      if (name === "multiple" && nodeName_(node) === "SELECT") {
+      if (name === "multiple" && nodeName_(node) === "select") {
         throw $compileMinErr("selmulti",
             "Binding to the 'multiple' attribute is not supported. Element: {0}",
             startingTag(node));
@@ -19708,7 +19710,7 @@ function $LocationProvider(){
       var elm = jqLite(event.target);
 
       // traverse the DOM up to find first A tag
-      while (lowercase(elm[0].nodeName) !== 'a') {
+      while (nodeName_(elm[0]) !== 'a') {
         // ignore rewriting if no A tag (reached root element, or no parent - removed from document)
         if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;
       }
@@ -33003,7 +33005,6 @@ _jQuery.fn.bindings = function(windowJquery, bindExp) {
 
     var inputType = (element.type) ? element.type.toLowerCase() : null,
         nodeName = element.nodeName.toLowerCase();
-
     if (!eventType) {
       eventType = {
         'text':            'change',
@@ -34465,7 +34466,7 @@ angular.scenario.dsl('element', function() {
         var href = elements.attr('href');
         var eventProcessDefault = elements.trigger('click')[0];
 
-        if (href && elements[0].nodeName.toUpperCase() === 'A' && eventProcessDefault) {
+        if (href && elements[0].nodeName.toLowerCase() === 'a' && eventProcessDefault) {
           this.application.navigateTo(href, function() {
             done();
           }, done);
@@ -34482,7 +34483,7 @@ angular.scenario.dsl('element', function() {
         var href = elements.attr('href');
         var eventProcessDefault = elements.trigger('dblclick')[0];
 
-        if (href && elements[0].nodeName.toUpperCase() === 'A' && eventProcessDefault) {
+        if (href && elements[0].nodeName.toLowerCase() === 'a' && eventProcessDefault) {
           this.application.navigateTo(href, function() {
             done();
           }, done);
