@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.21-build.342+sha.e25ed0d
+ * @license AngularJS v1.2.21-build.343+sha.cd9afd9
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.21-build.342+sha.e25ed0d/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.21-build.343+sha.cd9afd9/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11769,7 +11769,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.21-build.342+sha.e25ed0d',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.21-build.343+sha.cd9afd9',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 21,
@@ -25799,12 +25799,8 @@ forEach(['src', 'srcset', 'href'], function(attrName) {
         }
 
         attr.$observe(normalized, function(value) {
-          if (!value) {
-            if (attrName === 'href') {
-              attr.$set(name, null);
-            }
-            return;
-          }
+          if (!value)
+             return;
 
           attr.$set(name, value);
 
