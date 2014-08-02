@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3011+sha.52b77b6
+ * @license AngularJS v1.3.0-build.3012+sha.108a69b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9260,7 +9260,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3011+sha.52b77b6/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3012+sha.108a69b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11262,7 +11262,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3011+sha.52b77b6',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3012+sha.108a69b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -25549,14 +25549,16 @@ forEach(['src', 'srcset', 'href'], function(attrName) {
   };
 });
 
-/* global -nullFormCtrl */
+/* global -nullFormCtrl, -SUBMITTED_CLASS */
 var nullFormCtrl = {
   $addControl: noop,
   $removeControl: noop,
   $setValidity: noop,
   $setDirty: noop,
-  $setPristine: noop
-};
+  $setPristine: noop,
+  $setSubmitted: noop
+},
+SUBMITTED_CLASS = 'ng-submitted';
 
 /**
  * @ngdoc type
@@ -25609,6 +25611,7 @@ function FormController(element, attrs, $scope, $animate) {
   form.$pristine = true;
   form.$valid = true;
   form.$invalid = false;
+  form.$submitted = false;
 
   parentForm.$addControl(form);
 
@@ -25777,16 +25780,29 @@ function FormController(element, attrs, $scope, $animate) {
    * saving or resetting it.
    */
   form.$setPristine = function () {
-    $animate.removeClass(element, DIRTY_CLASS);
-    $animate.addClass(element, PRISTINE_CLASS);
+    $animate.setClass(element, PRISTINE_CLASS, DIRTY_CLASS + ' ' + SUBMITTED_CLASS);
     form.$dirty = false;
     form.$pristine = true;
+    form.$submitted = false;
     forEach(controls, function(control) {
       control.$setPristine();
     });
   };
-}
 
+  /**
+   * @ngdoc function
+   * @name ng.directive:form.FormController#$setSubmitted
+   * @methodOf ng.directive:form.FormController
+   *
+   * @description
+   * Sets the form to its submitted state.
+   */
+  form.$setSubmitted = function () {
+    $animate.addClass(element, SUBMITTED_CLASS);
+    form.$submitted = true;
+    parentForm.$setSubmitted();
+  };
+}
 
 /**
  * @ngdoc directive
@@ -25836,6 +25852,7 @@ function FormController(element, attrs, $scope, $animate) {
  *  - `ng-invalid` is set if the form is invalid.
  *  - `ng-pristine` is set if the form is pristine.
  *  - `ng-dirty` is set if the form is dirty.
+ *  - `ng-submitted` is set if the form was submitted.
  *
  * Keep in mind that ngAnimate can detect each of these classes when added and removed.
  *
@@ -25972,6 +25989,7 @@ var formDirectiveFactory = function(isNgForm) {
               var handleFormSubmission = function(event) {
                 scope.$apply(function() {
                   controller.$commitViewValue();
+                  controller.$setSubmitted();
                 });
 
                 event.preventDefault
