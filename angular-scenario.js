@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3113+sha.23da614
+ * @license AngularJS v1.3.0-build.3114+sha.0462b68
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9222,10 +9222,13 @@ return jQuery;
  * should all be static strings, not variables or general expressions.
  *
  * @param {string} module The namespace to use for the new minErr instance.
+ * @param {function} ErrorConstructor Custom error constructor to be instantiated when returning
+ *   error from returned function, for cases when a particular type of error is useful.
  * @returns {function(code:string, template:string, ...templateArgs): Error} minErr instance
  */
 
-function minErr(module) {
+function minErr(module, ErrorConstructor) {
+  ErrorConstructor = ErrorConstructor || Error;
   return function () {
     var code = arguments[0],
       prefix = '[' + (module ? module + ':' : '') + code + '] ',
@@ -9260,14 +9263,13 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3113+sha.23da614/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3114+sha.0462b68/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
         encodeURIComponent(stringify(arguments[i]));
     }
-
-    return new Error(message);
+    return new ErrorConstructor(message);
   };
 }
 
@@ -11282,7 +11284,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3113+sha.23da614',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3114+sha.0462b68',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -20937,6 +20939,7 @@ function $$QProvider() {
  * @returns {object} Promise manager.
  */
 function qFactory(nextTick, exceptionHandler) {
+  var $qMinErr = minErr('$q', TypeError);
   function callOnce(self, resolveFn, rejectFn) {
     var called = false;
     function wrap(fn) {
@@ -21039,8 +21042,16 @@ function qFactory(nextTick, exceptionHandler) {
   Deferred.prototype = {
     resolve: function(val) {
       if (this.promise.$$state.status) return;
-      if (val === this.promise) throw new TypeError('Cycle detected');
-      this.$$resolve(val);
+      if (val === this.promise) {
+        this.$$reject($qMinErr(
+          'qcycle',
+          "Expected promise to be resolved with value other than itself '{0}'",
+          val));
+      }
+      else {
+        this.$$resolve(val);
+      }
+
     },
 
     $$resolve: function(val) {
@@ -21224,8 +21235,7 @@ function qFactory(nextTick, exceptionHandler) {
 
   var $Q = function Q(resolver) {
     if (!isFunction(resolver)) {
-      // TODO(@caitp): minErr this
-      throw new TypeError('Expected resolverFn');
+      throw $qMinErr('norslvr', "Expected resolverFn, got '{0}'", resolver);
     }
 
     if (!(this instanceof Q)) {
