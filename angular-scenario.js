@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3120+sha.fe69752
+ * @license AngularJS v1.3.0-build.3121+sha.a4520a7
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3120+sha.fe69752/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3121+sha.a4520a7/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -9283,7 +9283,6 @@ function minErr(module, ErrorConstructor) {
   toString: true,
   ngMinErr: true,
   angularModule: true,
-  nodeName_: true,
   uid: true,
   REGEX_STRING_REGEXP: true,
   VALIDITY_STATE_PROPERTY: true,
@@ -9443,7 +9442,6 @@ var /** holds major version number for IE or NaN for real browsers */
     /** @name angular */
     angular           = window.angular || (window.angular = {}),
     angularModule,
-    nodeName_,
     uid               = 0;
 
 /**
@@ -11274,7 +11272,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3120+sha.fe69752',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3121+sha.a4520a7',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
