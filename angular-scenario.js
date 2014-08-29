@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3148+sha.77ce5b8
+ * @license AngularJS v1.3.0-build.3149+sha.1eda183
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3148+sha.77ce5b8/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3149+sha.1eda183/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11316,7 +11316,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3148+sha.77ce5b8',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3149+sha.1eda183',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -27522,7 +27522,18 @@ function testFlags(validity, flags) {
   return false;
 }
 
+function stringBasedInputType(ctrl) {
+  ctrl.$formatters.push(function(value) {
+    return ctrl.$isEmpty(value) ? value : value.toString();
+  });
+}
+
 function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
+  baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+  stringBasedInputType(ctrl);
+}
+
+function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   var validity = element.prop(VALIDITY_STATE_PROPERTY);
   var placeholder = element[0].placeholder, noevent = {};
   var type = lowercase(element[0].type);
@@ -27673,7 +27684,7 @@ function createDateParser(regexp, mapping) {
 function createDateInputType(type, regexp, parseDate, format) {
    return function dynamicDateInputType(scope, element, attr, ctrl, $sniffer, $browser, $filter) {
       badInputChecker(scope, element, attr, ctrl);
-      textInputType(scope, element, attr, ctrl, $sniffer, $browser);
+      baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
       var timezone = ctrl && ctrl.$options && ctrl.$options.timezone;
 
       ctrl.$$parserName = type;
@@ -27723,7 +27734,7 @@ function badInputChecker(scope, element, attr, ctrl) {
 
 function numberInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   badInputChecker(scope, element, attr, ctrl);
-  textInputType(scope, element, attr, ctrl, $sniffer, $browser);
+  baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
 
   ctrl.$$parserName = 'number';
   ctrl.$parsers.push(function(value) {
@@ -27757,7 +27768,8 @@ function numberInputType(scope, element, attr, ctrl, $sniffer, $browser) {
 
 function urlInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   badInputChecker(scope, element, attr, ctrl);
-  textInputType(scope, element, attr, ctrl, $sniffer, $browser);
+  baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+  stringBasedInputType(ctrl);
 
   ctrl.$$parserName = 'url';
   ctrl.$validators.url = function(modelValue, viewValue) {
@@ -27768,7 +27780,8 @@ function urlInputType(scope, element, attr, ctrl, $sniffer, $browser) {
 
 function emailInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   badInputChecker(scope, element, attr, ctrl);
-  textInputType(scope, element, attr, ctrl, $sniffer, $browser);
+  baseInputType(scope, element, attr, ctrl, $sniffer, $browser);
+  stringBasedInputType(ctrl);
 
   ctrl.$$parserName = 'email';
   ctrl.$validators.email = function(modelValue, viewValue) {
@@ -29208,6 +29221,7 @@ var minlengthDirective = function() {
 var ngListDirective = function() {
   return {
     restrict: 'A',
+    priority: 100,
     require: 'ngModel',
     link: function(scope, element, attr, ctrl) {
       // We want to control whitespace trimming so we use this convoluted approach
