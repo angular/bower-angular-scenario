@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3153+sha.4f9ac07
+ * @license AngularJS v1.3.0-build.3154+sha.6f7018d
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3153+sha.4f9ac07/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3154+sha.6f7018d/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11316,7 +11316,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3153+sha.4f9ac07',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3154+sha.6f7018d',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -32972,6 +32972,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
           optionsExp = attr.ngOptions,
           nullOption = false, // if false, user will not be able to select it (used by ngOptions)
           emptyOption,
+          renderScheduled = false,
           // we can't just jqLite('<option>') since jqLite is not smart enough
           // to create it in <select> and IE barfs otherwise.
           optionTemplate = jqLite(document.createElement('option')),
@@ -33161,9 +33162,19 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
 
         ctrl.$render = render;
 
-        scope.$watchCollection(valuesFn, render);
+        scope.$watchCollection(valuesFn, function () {
+          if (!renderScheduled) {
+            scope.$$postDigest(render);
+            renderScheduled = true;
+          }
+        });
         if ( multiple ) {
-          scope.$watchCollection(function() { return ctrl.$modelValue; }, render);
+          scope.$watchCollection(function() { return ctrl.$modelValue; }, function () {
+            if (!renderScheduled) {
+              scope.$$postDigest(render);
+              renderScheduled = true;
+            }
+          });
         }
 
         function getSelectedSet() {
@@ -33186,6 +33197,8 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
 
 
         function render() {
+          renderScheduled = false;
+
               // Temporary location for the option groups before we render them
           var optionGroups = {'':[]},
               optionGroupNames = [''],
