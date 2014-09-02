@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3169+sha.995a8d3
+ * @license AngularJS v1.3.0-build.3170+sha.203ea10
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3169+sha.995a8d3/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3170+sha.203ea10/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11316,7 +11316,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3169+sha.995a8d3',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3170+sha.203ea10',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -27601,7 +27601,7 @@ function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
     // a row.
     var revalidate = validity && ctrl.$$hasNativeValidators;
     if (ctrl.$viewValue !== value || (value === '' && revalidate)) {
-      if (scope.$$phase) {
+      if (scope.$root.$$phase) {
         ctrl.$setViewValue(value, event, revalidate);
       } else {
         scope.$apply(function() {
@@ -30487,7 +30487,7 @@ forEach(
   'click dblclick mousedown mouseup mouseover mouseout mousemove mouseenter mouseleave keydown keyup keypress submit focus blur copy cut paste'.split(' '),
   function(name) {
     var directiveName = directiveNormalize('ng-' + name);
-    ngEventDirectives[directiveName] = ['$parse', function($parse) {
+    ngEventDirectives[directiveName] = ['$parse', '$rootScope', function($parse, $rootScope) {
       return {
         restrict: 'A',
         compile: function($element, attr) {
@@ -30498,7 +30498,7 @@ forEach(
               var callback = function() {
                 fn(scope, {$event:event});
               };
-              if (forceAsyncEvents[eventName] && scope.$$phase) {
+              if (forceAsyncEvents[eventName] && $rootScope.$$phase) {
                 scope.$evalAsync(callback);
               } else {
                 scope.$apply(callback);
