@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3212+sha.b95dabb
+ * @license AngularJS v1.3.0-build.3213+sha.43c67cc
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3212+sha.b95dabb/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3213+sha.43c67cc/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11306,7 +11306,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3212+sha.b95dabb',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3213+sha.43c67cc',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -20081,7 +20081,7 @@ Lexer.prototype = {
   },
 
   readIdent: function() {
-    var parser = this;
+    var expression = this.text;
 
     var ident = '';
     var start = this.index;
@@ -20140,13 +20140,13 @@ Lexer.prototype = {
       token.fn = fn;
       token.constant = true;
     } else {
-      var getter = getterFn(ident, this.options, this.text);
+      var getter = getterFn(ident, this.options, expression);
       // TODO(perf): consider exposing the getter reference
       token.fn = extend(function $parsePathGetter(self, locals) {
         return getter(self, locals);
       }, {
         assign: function(self, value) {
-          return setter(self, ident, value, parser.text);
+          return setter(self, ident, value, expression);
         }
       });
     }
@@ -20354,7 +20354,7 @@ Parser.prototype = {
         // TODO(size): maybe we should not support multiple statements?
         return (statements.length === 1)
             ? statements[0]
-            : function(self, locals) {
+            : function $parseStatements(self, locals) {
                 var value;
                 for (var i = 0, ii = statements.length; i < ii; i++) {
                   value = statements[i](self, locals);
@@ -20368,13 +20368,10 @@ Parser.prototype = {
   filterChain: function() {
     var left = this.expression();
     var token;
-    while (true) {
-      if ((token = this.expect('|'))) {
-        left = this.binaryFn(left, token.fn, this.filter());
-      } else {
-        return left;
-      }
+    while ((token = this.expect('|'))) {
+      left = this.binaryFn(left, token.fn, this.filter());
     }
+    return left;
   },
 
   filter: function() {
@@ -20421,7 +20418,7 @@ Parser.prototype = {
             this.text.substring(0, token.index) + '] can not be assigned to', token);
       }
       right = this.ternary();
-      return function(scope, locals) {
+      return function $parseAssignment(scope, locals) {
         return left.assign(scope, right(scope, locals), locals);
       };
     }
@@ -20447,13 +20444,10 @@ Parser.prototype = {
   logicalOR: function() {
     var left = this.logicalAND();
     var token;
-    while (true) {
-      if ((token = this.expect('||'))) {
-        left = this.binaryFn(left, token.fn, this.logicalAND());
-      } else {
-        return left;
-      }
+    while ((token = this.expect('||'))) {
+      left = this.binaryFn(left, token.fn, this.logicalAND());
     }
+    return left;
   },
 
   logicalAND: function() {
@@ -20515,9 +20509,9 @@ Parser.prototype = {
   },
 
   fieldAccess: function(object) {
-    var parser = this;
+    var expression = this.text;
     var field = this.expect().text;
-    var getter = getterFn(field, this.options, this.text);
+    var getter = getterFn(field, this.options, expression);
 
     return extend(function $parseFieldAccess(scope, locals, self) {
       return getter(self || object(scope, locals));
@@ -20525,13 +20519,13 @@ Parser.prototype = {
       assign: function(scope, value, locals) {
         var o = object(scope, locals);
         if (!o) object.assign(scope, o = {});
-        return setter(o, field, value, parser.text);
+        return setter(o, field, value, expression);
       }
     });
   },
 
   objectIndex: function(obj) {
-    var parser = this;
+    var expression = this.text;
 
     var indexFn = this.expression();
     this.consume(']');
@@ -20541,15 +20535,15 @@ Parser.prototype = {
           i = indexFn(self, locals),
           v;
 
-      ensureSafeMemberName(i, parser.text);
+      ensureSafeMemberName(i, expression);
       if (!o) return undefined;
-      v = ensureSafeObject(o[i], parser.text);
+      v = ensureSafeObject(o[i], expression);
       return v;
     }, {
       assign: function(self, value, locals) {
-        var key = ensureSafeMemberName(indexFn(self, locals), parser.text);
+        var key = ensureSafeMemberName(indexFn(self, locals), expression);
         // prevent overwriting of Function.constructor which would break ensureSafeObject check
-        var o = ensureSafeObject(obj(self, locals), parser.text);
+        var o = ensureSafeObject(obj(self, locals), expression);
         if (!o) obj.assign(self, o = {});
         return o[key] = value;
       }
@@ -20611,9 +20605,9 @@ Parser.prototype = {
     }
     this.consume(']');
 
-    return extend(function(self, locals) {
+    return extend(function $parseArrayLiteral(self, locals) {
       var array = [];
-      for (var i = 0; i < elementFns.length; i++) {
+      for (var i = 0, ii = elementFns.length; i < ii; i++) {
         array.push(elementFns[i](self, locals));
       }
       return array;
@@ -20644,9 +20638,9 @@ Parser.prototype = {
     }
     this.consume('}');
 
-    return extend(function(self, locals) {
+    return extend(function $parseObjectLiteral(self, locals) {
       var object = {};
-      for (var i = 0; i < keyValues.length; i++) {
+      for (var i = 0, ii = keyValues.length; i < ii; i++) {
         var keyValue = keyValues[i];
         object[keyValue.key] = keyValue.value(self, locals);
       }
