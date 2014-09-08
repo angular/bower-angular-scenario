@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3213+sha.43c67cc
+ * @license AngularJS v1.3.0-build.3214+sha.f6aa1c5
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3213+sha.43c67cc/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3214+sha.f6aa1c5/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10773,9 +10773,13 @@ function bindJQuery() {
     // the $destroy event on all removed nodes.
     originalCleanData = jQuery.cleanData;
     jQuery.cleanData = function(elems) {
+      var events;
       if (!skipDestroyOnNextJQueryCleanData) {
         for (var i = 0, elem; (elem = elems[i]) != null; i++) {
-          jQuery(elem).triggerHandler('$destroy');
+          events = jQuery._data(elem, "events");
+          if (events && events.$destroy) {
+            jQuery(elem).triggerHandler('$destroy');
+          }
         }
       } else {
         skipDestroyOnNextJQueryCleanData = false;
@@ -11306,7 +11310,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3213+sha.43c67cc',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3214+sha.f6aa1c5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
