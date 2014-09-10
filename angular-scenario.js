@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3233+sha.1418383
+ * @license AngularJS v1.3.0-build.3234+sha.9314719
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3233+sha.1418383/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3234+sha.9314719/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11314,7 +11314,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3233+sha.1418383',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3234+sha.9314719',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -28534,9 +28534,11 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
 
     // check parser error
     if (!processParseErrors(parseValid)) {
+      validationDone(false);
       return;
     }
     if (!processSyncValidators()) {
+      validationDone(false);
       return;
     }
     processAsyncValidators();
@@ -28554,7 +28556,6 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
           forEach(ctrl.$asyncValidators, function(v, name) {
             setValidity(name, null);
           });
-          validationDone();
           return false;
         }
       }
@@ -28572,7 +28573,6 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
         forEach(ctrl.$asyncValidators, function(v, name) {
           setValidity(name, null);
         });
-        validationDone();
         return false;
       }
       return true;
@@ -28580,6 +28580,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
 
     function processAsyncValidators() {
       var validatorPromises = [];
+      var allValid = true;
       forEach(ctrl.$asyncValidators, function(validator, name) {
         var promise = validator(modelValue, viewValue);
         if (!isPromiseLike(promise)) {
@@ -28590,13 +28591,16 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
         validatorPromises.push(promise.then(function() {
           setValidity(name, true);
         }, function(error) {
+          allValid = false;
           setValidity(name, false);
         }));
       });
       if (!validatorPromises.length) {
-        validationDone();
+        validationDone(true);
       } else {
-        $q.all(validatorPromises).then(validationDone);
+        $q.all(validatorPromises).then(function() {
+          validationDone(allValid);
+        }, noop);
       }
     }
 
@@ -28606,10 +28610,10 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
       }
     }
 
-    function validationDone() {
+    function validationDone(allValid) {
       if (localValidationRunId === currentValidationRunId) {
 
-        doneCallback();
+        doneCallback(allValid);
       }
     }
   };
@@ -28670,9 +28674,13 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
       ctrl.$modelValue = modelValue;
       writeToModelIfNeeded();
     }
-    ctrl.$$runValidators(parserValid, modelValue, viewValue, function() {
+    ctrl.$$runValidators(parserValid, modelValue, viewValue, function(allValid) {
       if (!allowInvalid) {
-        ctrl.$modelValue = ctrl.$valid ? modelValue : undefined;
+        // Note: Don't check ctrl.$valid here, as we could have
+        // external validators (e.g. calculated on the server),
+        // that just call $setValidity and need the model value
+        // to calculate their validity.
+        ctrl.$modelValue = allValid ? modelValue : undefined;
         writeToModelIfNeeded();
       }
     });
