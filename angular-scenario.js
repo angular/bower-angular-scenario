@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3273+sha.0702aef
+ * @license AngularJS v1.3.0-build.3277+sha.f0c94ea
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3273+sha.0702aef/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3277+sha.f0c94ea/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11314,7 +11314,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3273+sha.0702aef',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3277+sha.f0c94ea',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -25532,7 +25532,7 @@ var lowercaseFilter = valueFn(lowercase);
  */
 var uppercaseFilter = valueFn(uppercase);
 
-/**
+/*
  * @ngdoc filter
  * @name limitTo
  * @kind function
@@ -25591,17 +25591,18 @@ var uppercaseFilter = valueFn(uppercase);
          expect(limitedLongNumber.getText()).toEqual('Output long number: 234');
        });
 
-       it('should update the output when -3 is entered', function() {
-         numLimitInput.clear();
-         numLimitInput.sendKeys('-3');
-         letterLimitInput.clear();
-         letterLimitInput.sendKeys('-3');
-         longNumberLimitInput.clear();
-         longNumberLimitInput.sendKeys('-3');
-         expect(limitedNumbers.getText()).toEqual('Output numbers: [7,8,9]');
-         expect(limitedLetters.getText()).toEqual('Output letters: ghi');
-         expect(limitedLongNumber.getText()).toEqual('Output long number: 342');
-       });
+       // There is a bug in safari and protractor that doesn't like the minus key
+       // it('should update the output when -3 is entered', function() {
+       //   numLimitInput.clear();
+       //   numLimitInput.sendKeys('-3');
+       //   letterLimitInput.clear();
+       //   letterLimitInput.sendKeys('-3');
+       //   longNumberLimitInput.clear();
+       //   longNumberLimitInput.sendKeys('-3');
+       //   expect(limitedNumbers.getText()).toEqual('Output numbers: [7,8,9]');
+       //   expect(limitedLetters.getText()).toEqual('Output letters: ghi');
+       //   expect(limitedLongNumber.getText()).toEqual('Output long number: 342');
+       // });
 
        it('should not exceed the maximum size of input array', function() {
          numLimitInput.clear();
@@ -25616,7 +25617,7 @@ var uppercaseFilter = valueFn(uppercase);
        });
      </file>
    </example>
- */
+*/
 function limitToFilter(){
   return function(input, limit) {
     if (isNumber(input)) input = input.toString();
