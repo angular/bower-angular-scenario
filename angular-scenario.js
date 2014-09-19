@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3270+sha.373d7c9
+ * @license AngularJS v1.3.0-build.3271+sha.bd41bd5
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3270+sha.373d7c9/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3271+sha.bd41bd5/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11314,7 +11314,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3270+sha.373d7c9',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3271+sha.bd41bd5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -25566,9 +25566,9 @@ var uppercaseFilter = valueFn(uppercase);
            }]);
        </script>
        <div ng-controller="ExampleController">
-         Limit {{numbers}} to: <input type="integer" ng-model="numLimit">
+         Limit {{numbers}} to: <input type="number" step="1" ng-model="numLimit">
          <p>Output numbers: {{ numbers | limitTo:numLimit }}</p>
-         Limit {{letters}} to: <input type="integer" ng-model="letterLimit">
+         Limit {{letters}} to: <input type="number" step="1" ng-model="letterLimit">
          <p>Output letters: {{ letters | limitTo:letterLimit }}</p>
          Limit {{longNumber}} to: <input type="integer" ng-model="longNumberLimit">
          <p>Output long number: {{ longNumber | limitTo:longNumberLimit }}</p>
