@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3285+sha.6b05105
+ * @license AngularJS v1.3.0-build.3286+sha.a591e8b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3285+sha.6b05105/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3286+sha.a591e8b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -9323,7 +9323,6 @@ function minErr(module, ErrorConstructor) {
   trim: true,
   isElement: true,
   makeMap: true,
-  map: true,
   size: true,
   includes: true,
   arrayRemove: true,
@@ -9887,15 +9886,6 @@ function makeMap(str) {
 
 function nodeName_(element) {
   return lowercase(element.nodeName || element[0].nodeName);
-}
-
-
-function map(obj, iterator, context) {
-  var results = [];
-  forEach(obj, function(value, index, list) {
-    results.push(iterator.call(context, value, index, list));
-  });
-  return results;
 }
 
 
@@ -11314,7 +11304,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3285+sha.6b05105',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3286+sha.a591e8b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -25782,7 +25772,7 @@ function orderByFilter($parse){
     if (!(isArrayLike(array))) return array;
     if (!sortPredicate) return array;
     sortPredicate = isArray(sortPredicate) ? sortPredicate: [sortPredicate];
-    sortPredicate = map(sortPredicate, function(predicate){
+    sortPredicate = sortPredicate.map(function(predicate){
       var descending = false, get = predicate || identity;
       if (isString(predicate)) {
         if ((predicate.charAt(0) == '+' || predicate.charAt(0) == '-')) {
