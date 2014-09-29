@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3311+sha.86d33c5
+ * @license AngularJS v1.3.0-build.3312+sha.6303c3d
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3311+sha.86d33c5/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3312+sha.6303c3d/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11304,7 +11304,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3311+sha.86d33c5',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3312+sha.6303c3d',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -16484,6 +16484,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
                 boundTranscludeFn = linkQueue.shift(),
                 linkNode = $compileNode[0];
 
+            if (scope.$$destroyed) continue;
+
             if (beforeTemplateLinkNode !== beforeTemplateCompileNode) {
               var oldClasses = beforeTemplateLinkNode.className;
 
@@ -16510,6 +16512,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
       return function delayedNodeLinkFn(ignoreChildLinkFn, scope, node, rootElement, boundTranscludeFn) {
         var childBoundTranscludeFn = boundTranscludeFn;
+        if (scope.$$destroyed) return;
         if (linkQueue) {
           linkQueue.push(scope);
           linkQueue.push(node);
@@ -21954,7 +21957,19 @@ function $RootScopeProvider(){
         } else {
           parent.$$childHead = parent.$$childTail = child;
         }
+
+        // When the new scope is not isolated or we inherit from `this`, and
+        // the parent scope is destroyed, the property `$$destroyed` is inherited
+        // prototypically. In all other cases, this property needs to be set
+        // when the parent scope is destroyed.
+        // The listener needs to be added after the parent is set
+        if (isolate || parent != this) child.$on('$destroy', destroyChild);
+
         return child;
+
+        function destroyChild() {
+          child.$$destroyed = true;
+        }
       },
 
       /**
