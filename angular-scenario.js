@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3329+sha.86c7d12
+ * @license AngularJS v1.3.0-build.3330+sha.074a146
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3329+sha.86c7d12/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3330+sha.074a146/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11304,7 +11304,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3329+sha.86c7d12',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3330+sha.074a146',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -30161,11 +30161,9 @@ var ngBindDirective = ['$compile', function($compile) {
       $compile.$$addBindingClass(templateElement);
       return function ngBindLink(scope, element, attr) {
         $compile.$$addBindingInfo(element, attr.ngBind);
+        element = element[0];
         scope.$watch(attr.ngBind, function ngBindWatchAction(value) {
-          // We are purposefully using == here rather than === because we want to
-          // catch when value is "null or undefined"
-          // jshint -W041
-          element.text(value == undefined ? '' : value);
+          element.textContent = value === undefined ? '' : value;
         });
       };
     }
@@ -30231,8 +30229,9 @@ var ngBindTemplateDirective = ['$interpolate', '$compile', function($interpolate
       return function ngBindTemplateLink(scope, element, attr) {
         var interpolateFn = $interpolate(element.attr(attr.$attr.ngBindTemplate));
         $compile.$$addBindingInfo(element, interpolateFn.expressions);
+        element = element[0];
         attr.$observe('ngBindTemplate', function(value) {
-          element.text(value);
+          element.textContent = value === undefined ? '' : value;
         });
       };
     }
