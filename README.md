@@ -1,5 +1,9 @@
 # bower-angular-scenario
 
+This tool is now in maintenance mode. If you are starting a new project, please use
+[Protractor](https://github.com/angular/protractor). Existing projects using scenario runner are
+advised to migrate to protractor, as this tool is unlikely to receive updates.
+
 This repo is for distribution on `bower`. The source for this module is in the
 [main AngularJS repo](https://github.com/angular/angular.js/tree/master/src/ngScenario).
 Please file issues and pull requests against that repo.
