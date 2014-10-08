@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3376+sha.d5445c6
+ * @license AngularJS v1.3.0-build.3377+sha.0d3b69a
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3376+sha.d5445c6/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3377+sha.0d3b69a/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11313,7 +11313,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3376+sha.d5445c6',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3377+sha.0d3b69a',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -13173,7 +13173,21 @@ function createInjector(modulesToLoad, strictDi) {
     return providerCache[name + providerSuffix] = provider_;
   }
 
-  function factory(name, factoryFn) { return provider(name, { $get: factoryFn }); }
+  function enforceReturnValue(name, factory) {
+    return function enforcedReturnValue() {
+      var result = instanceInjector.invoke(factory);
+      if (isUndefined(result)) {
+        throw $injectorMinErr('undef', "Provider '{0}' must return a value from $get factory method.", name);
+      }
+      return result;
+    };
+  }
+
+  function factory(name, factoryFn, enforce) {
+    return provider(name, {
+      $get: enforce !== false ? enforceReturnValue(name, factoryFn) : factoryFn
+    });
+  }
 
   function service(name, constructor) {
     return factory(name, ['$injector', function($injector) {
@@ -13181,7 +13195,7 @@ function createInjector(modulesToLoad, strictDi) {
     }]);
   }
 
-  function value(name, val) { return factory(name, valueFn(val)); }
+  function value(name, val) { return factory(name, valueFn(val), false); }
 
   function constant(name, value) {
     assertNotHasOwnProperty(name, 'constant');
@@ -33012,6 +33026,8 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
   };
 }];
 
+var NG_HIDE_CLASS = 'ng-hide';
+var NG_HIDE_IN_PROGRESS_CLASS = 'ng-hide-animate';
 /**
  * @ngdoc directive
  * @name ngShow
@@ -33173,7 +33189,11 @@ var ngShowDirective = ['$animate', function($animate) {
     multiElement: true,
     link: function(scope, element, attr) {
       scope.$watch(attr.ngShow, function ngShowWatchAction(value){
-        $animate[value ? 'removeClass' : 'addClass'](element, 'ng-hide');
+        // we're adding a temporary, animation-specific class for ng-hide since this way
+        // we can control when the element is actually displayed on screen without having
+        // to have a global/greedy CSS selector that breaks when other animations are run.
+        // Read: https://github.com/angular/angular.js/issues/9103#issuecomment-58335845
+        $animate[value ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, NG_HIDE_IN_PROGRESS_CLASS);
       });
     }
   };
@@ -33328,7 +33348,9 @@ var ngHideDirective = ['$animate', function($animate) {
     multiElement: true,
     link: function(scope, element, attr) {
       scope.$watch(attr.ngHide, function ngHideWatchAction(value){
-        $animate[value ? 'addClass' : 'removeClass'](element, 'ng-hide');
+        // The comment inside of the ngShowDirective explains why we add and
+        // remove a temporary class for the show/hide animation
+        $animate[value ? 'addClass' : 'removeClass'](element,NG_HIDE_CLASS, NG_HIDE_IN_PROGRESS_CLASS);
       });
     }
   };
@@ -36618,5 +36640,5 @@ if (config.autotest) {
 })(window, document);
 
 
-!window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";\n\n[ng\\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak],\n.ng-cloak, .x-ng-cloak,\n.ng-hide:not(.ng-animate) {\n  display: none !important;\n}\n\nng\\:form {\n  display: block;\n}\n</style>');
+!window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";\n\n[ng\\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak],\n.ng-cloak, .x-ng-cloak,\n.ng-hide:not(.ng-hide-animate) {\n  display: none !important;\n}\n\nng\\:form {\n  display: block;\n}\n</style>');
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";\n/* CSS Document */\n\n/** Structure */\nbody {\n  font-family: Arial, sans-serif;\n  margin: 0;\n  font-size: 14px;\n}\n\n#system-error {\n  font-size: 1.5em;\n  text-align: center;\n}\n\n#json, #xml {\n  display: none;\n}\n\n#header {\n  position: fixed;\n  width: 100%;\n}\n\n#specs {\n  padding-top: 50px;\n}\n\n#header .angular {\n  font-family: Courier New, monospace;\n  font-weight: bold;\n}\n\n#header h1 {\n  font-weight: normal;\n  float: left;\n  font-size: 30px;\n  line-height: 30px;\n  margin: 0;\n  padding: 10px 10px;\n  height: 30px;\n}\n\n#application h2,\n#specs h2 {\n  margin: 0;\n  padding: 0.5em;\n  font-size: 1.1em;\n}\n\n#status-legend {\n  margin-top: 10px;\n  margin-right: 10px;\n}\n\n#header,\n#application,\n.test-info,\n.test-actions li {\n  overflow: hidden;\n}\n\n#application {\n  margin: 10px;\n}\n\n#application iframe {\n  width: 100%;\n  height: 758px;\n}\n\n#application .popout {\n  float: right;\n}\n\n#application iframe {\n  border: none;\n}\n\n.tests li,\n.test-actions li,\n.test-it li,\n.test-it ol,\n.status-display {\n  list-style-type: none;\n}\n\n.tests,\n.test-it ol,\n.status-display {\n  margin: 0;\n  padding: 0;\n}\n\n.test-info {\n  margin-left: 1em;\n  margin-top: 0.5em;\n  border-radius: 8px 0 0 8px;\n  -webkit-border-radius: 8px 0 0 8px;\n  -moz-border-radius: 8px 0 0 8px;\n  cursor: pointer;\n}\n\n.test-info:hover .test-name {\n  text-decoration: underline;\n}\n\n.test-info .closed:before {\n  content: \'\\25b8\\00A0\';\n}\n\n.test-info .open:before {\n  content: \'\\25be\\00A0\';\n  font-weight: bold;\n}\n\n.test-it ol {\n  margin-left: 2.5em;\n}\n\n.status-display,\n.status-display li {\n  float: right;\n}\n\n.status-display li {\n  padding: 5px 10px;\n}\n\n.timer-result,\n.test-title {\n  display: inline-block;\n  margin: 0;\n  padding: 4px;\n}\n\n.test-actions .test-title,\n.test-actions .test-result {\n  display: table-cell;\n  padding-left: 0.5em;\n  padding-right: 0.5em;\n}\n\n.test-actions {\n  display: table;\n}\n\n.test-actions li {\n  display: table-row;\n}\n\n.timer-result {\n  width: 4em;\n  padding: 0 10px;\n  text-align: right;\n  font-family: monospace;\n}\n\n.test-it pre,\n.test-actions pre {\n  clear: left;\n  color: black;\n  margin-left: 6em;\n}\n\n.test-describe {\n  padding-bottom: 0.5em;\n}\n\n.test-describe .test-describe {\n  margin: 5px 5px 10px 2em;\n}\n\n.test-actions .status-pending .test-title:before {\n  content: \'\\00bb\\00A0\';\n}\n\n.scrollpane {\n   max-height: 20em;\n   overflow: auto;\n}\n\n/** Colors */\n\n#header {\n  background-color: #F2C200;\n}\n\n#specs h2 {\n  border-top: 2px solid #BABAD1;\n}\n\n#specs h2,\n#application h2 {\n  background-color: #efefef;\n}\n\n#application {\n  border: 1px solid #BABAD1;\n}\n\n.test-describe .test-describe {\n  border-left: 1px solid #BABAD1;\n  border-right: 1px solid #BABAD1;\n  border-bottom: 1px solid #BABAD1;\n}\n\n.status-display {\n  border: 1px solid #777;\n}\n\n.status-display .status-pending,\n.status-pending .test-info {\n  background-color: #F9EEBC;\n}\n\n.status-display .status-success,\n.status-success .test-info {\n  background-color: #B1D7A1;\n}\n\n.status-display .status-failure,\n.status-failure .test-info {\n  background-color: #FF8286;\n}\n\n.status-display .status-error,\n.status-error .test-info {\n  background-color: black;\n  color: white;\n}\n\n.test-actions .status-success .test-title {\n  color: #30B30A;\n}\n\n.test-actions .status-failure .test-title {\n  color: #DF0000;\n}\n\n.test-actions .status-error .test-title {\n  color: black;\n}\n\n.test-actions .timer-result {\n  color: #888;\n}\n</style>');
