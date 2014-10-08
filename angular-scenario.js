@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3362+sha.6fd36de
+ * @license AngularJS v1.3.0-build.3365+sha.74a214c
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3362+sha.6fd36de/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3365+sha.74a214c/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -9446,13 +9446,10 @@ var /** holds major version number for IE or NaN for real browsers */
     uid               = 0;
 
 /**
- * IE 11 changed the format of the UserAgent string.
- * See http://msdn.microsoft.com/en-us/library/ms537503.aspx
+ * documentMode is an IE-only property
+ * http://msdn.microsoft.com/en-us/library/ie/cc196988(v=vs.85).aspx
  */
-msie = int((/msie (\d+)/.exec(lowercase(navigator.userAgent)) || [])[1]);
-if (isNaN(msie)) {
-  msie = int((/trident\/.*; rv:(\d+)/.exec(lowercase(navigator.userAgent)) || [])[1]);
-}
+msie = document.documentMode;
 
 
 /**
@@ -11306,7 +11303,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3362+sha.6fd36de',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3365+sha.74a214c',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -34616,7 +34613,11 @@ _jQuery.fn.bindings = function(windowJquery, bindExp) {
 };
 
 (function() {
-  var msie = parseInt((/msie (\d+)/.exec(navigator.userAgent.toLowerCase()) || [])[1], 10);
+  /**
+   * documentMode is an IE-only property
+   * http://msdn.microsoft.com/en-us/library/ie/cc196988(v=vs.85).aspx
+   */
+  var msie = document.documentMode;
 
   /**
    * Triggers a browser event. Attempts to choose the right event if one is
