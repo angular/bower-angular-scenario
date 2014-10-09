@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3388+sha.944408e
+ * @license AngularJS v1.3.0-build.3389+sha.2435e2b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3388+sha.944408e/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3389+sha.2435e2b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11313,7 +11313,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3388+sha.944408e',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3389+sha.2435e2b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -33940,7 +33940,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
         // Workaround for https://code.google.com/p/chromium/issues/detail?id=381459
         // Adding an <option selected="selected"> element to a <select required="required"> should
         // automatically select the new element
-        if (element[0].hasAttribute('selected')) {
+        if (element && element[0].hasAttribute('selected')) {
           element[0].selected = true;
         }
       };
@@ -34238,6 +34238,23 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
           }
         }
 
+        /**
+         * A new labelMap is created with each render.
+         * This function is called for each existing option with added=false,
+         * and each new option with added=true.
+         * - Labels that are passed to this method twice,
+         * (once with added=true and once with added=false) will end up with a value of 0, and
+         * will cause no change to happen to the corresponding option.
+         * - Labels that are passed to this method only once with added=false will end up with a
+         * value of -1 and will eventually be passed to selectCtrl.removeOption()
+         * - Labels that are passed to this method only once with added=true will end up with a
+         * value of 1 and will eventually be passed to selectCtrl.addOption()
+        */
+        function updateLabelMap(labelMap, label, added) {
+          labelMap[label] = labelMap[label] || 0;
+          labelMap[label] += (added ? 1 : -1);
+        }
+
         function render() {
           renderScheduled = false;
 
@@ -34255,6 +34272,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
               value,
               groupLength, length,
               groupIndex, index,
+              labelMap = {},
               selected,
               isSelected = createIsSelectedFn(viewValue),
               anySelected = false,
@@ -34337,6 +34355,8 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
                 // reuse elements
                 lastElement = existingOption.element;
                 if (existingOption.label !== option.label) {
+                  updateLabelMap(labelMap, existingOption.label, false);
+                  updateLabelMap(labelMap, option.label, true);
                   lastElement.text(existingOption.label = option.label);
                 }
                 if (existingOption.id !== option.id) {
@@ -34376,7 +34396,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
                     id: option.id,
                     selected: option.selected
                 });
-                selectCtrl.addOption(option.label, element);
+                updateLabelMap(labelMap, option.label, true);
                 if (lastElement) {
                   lastElement.after(element);
                 } else {
@@ -34389,9 +34409,16 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
             index++; // increment since the existingOptions[0] is parent element not OPTION
             while(existingOptions.length > index) {
               option = existingOptions.pop();
-              selectCtrl.removeOption(option.label);
+              updateLabelMap(labelMap, option.label, false);
               option.element.remove();
             }
+            forEach(labelMap, function (count, label) {
+              if (count > 0) {
+                selectCtrl.addOption(label);
+              } else if (count < 0) {
+                selectCtrl.removeOption(label);
+              }
+            });
           }
           // remove any excessive OPTGROUPs from select
           while(optionGroupsCache.length > groupIndex) {
