@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0-build.3420+sha.0f6aa10
+ * @license AngularJS v1.3.0-build.3421+sha.02be700
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3420+sha.0f6aa10/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.0-build.3421+sha.02be700/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11314,7 +11314,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0-build.3420+sha.0f6aa10',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.0-build.3421+sha.02be700',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 0,
@@ -13760,7 +13760,8 @@ var $AnimateProvider = ['$provide', function($provide) {
         }
       });
 
-      return (toAdd.length + toRemove.length) > 0 && [toAdd.length && toAdd, toRemove.length && toRemove];
+      return (toAdd.length + toRemove.length) > 0 &&
+        [toAdd.length ? toAdd : null, toRemove.length ? toRemove : null];
     }
 
     function cachedClassManipulation(cache, classes, op) {
@@ -13782,6 +13783,13 @@ var $AnimateProvider = ['$provide', function($provide) {
       return currentDefer.promise;
     }
 
+    function applyStyles(element, options) {
+      if (angular.isObject(options)) {
+        var styles = extend(options.from || {}, options.to || {});
+        element.css(styles);
+      }
+    }
+
     /**
      *
      * @ngdoc service
@@ -13800,6 +13808,10 @@ var $AnimateProvider = ['$provide', function($provide) {
      * page}.
      */
     return {
+      animate : function(element, from, to) {
+        applyStyles(element, { from: from, to: to });
+        return asyncPromise();
+      },
 
       /**
        *
@@ -13814,9 +13826,11 @@ var $AnimateProvider = ['$provide', function($provide) {
        *   a child (if the after element is not present)
        * @param {DOMElement} after the sibling element which will append the element
        *   after itself
+       * @param {object=} options an optional collection of styles that will be applied to the element.
        * @return {Promise} the animation callback promise
        */
-      enter : function(element, parent, after) {
+      enter : function(element, parent, after, options) {
+        applyStyles(element, options);
         after ? after.after(element)
               : parent.prepend(element);
         return asyncPromise();
@@ -13830,9 +13844,10 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @description Removes the element from the DOM. When the function is called a promise
        * is returned that will be resolved at a later time.
        * @param {DOMElement} element the element which will be removed from the DOM
+       * @param {object=} options an optional collection of options that will be applied to the element.
        * @return {Promise} the animation callback promise
        */
-      leave : function(element) {
+      leave : function(element, options) {
         element.remove();
         return asyncPromise();
       },
@@ -13852,12 +13867,13 @@ var $AnimateProvider = ['$provide', function($provide) {
        *   inserted into (if the after element is not present)
        * @param {DOMElement} after the sibling element where the element will be
        *   positioned next to
+       * @param {object=} options an optional collection of options that will be applied to the element.
        * @return {Promise} the animation callback promise
        */
-      move : function(element, parent, after) {
+      move : function(element, parent, after, options) {
         // Do not remove element before insert. Removing will cause data associated with the
         // element to be dropped. Insert will implicitly do the remove.
-        return this.enter(element, parent, after);
+        return this.enter(element, parent, after, options);
       },
 
       /**
@@ -13870,13 +13886,14 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @param {DOMElement} element the element which will have the className value
        *   added to it
        * @param {string} className the CSS class which will be added to the element
+       * @param {object=} options an optional collection of options that will be applied to the element.
        * @return {Promise} the animation callback promise
        */
-      addClass : function(element, className) {
-        return this.setClass(element, className, []);
+      addClass : function(element, className, options) {
+        return this.setClass(element, className, [], options);
       },
 
-      $$addClassImmediately : function(element, className) {
+      $$addClassImmediately : function(element, className, options) {
         element = jqLite(element);
         className = !isString(className)
                         ? (isArray(className) ? className.join(' ') : '')
@@ -13884,6 +13901,8 @@ var $AnimateProvider = ['$provide', function($provide) {
         forEach(element, function (element) {
           jqLiteAddClass(element, className);
         });
+        applyStyles(element, options);
+        return asyncPromise();
       },
 
       /**
@@ -13896,13 +13915,14 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @param {DOMElement} element the element which will have the className value
        *   removed from it
        * @param {string} className the CSS class which will be removed from the element
+       * @param {object=} options an optional collection of options that will be applied to the element.
        * @return {Promise} the animation callback promise
        */
-      removeClass : function(element, className) {
-        return this.setClass(element, [], className);
+      removeClass : function(element, className, options) {
+        return this.setClass(element, [], className, options);
       },
 
-      $$removeClassImmediately : function(element, className) {
+      $$removeClassImmediately : function(element, className, options) {
         element = jqLite(element);
         className = !isString(className)
                         ? (isArray(className) ? className.join(' ') : '')
@@ -13910,6 +13930,7 @@ var $AnimateProvider = ['$provide', function($provide) {
         forEach(element, function (element) {
           jqLiteRemoveClass(element, className);
         });
+        applyStyles(element, options);
         return asyncPromise();
       },
 
@@ -13924,9 +13945,10 @@ var $AnimateProvider = ['$provide', function($provide) {
        *   removed from it
        * @param {string} add the CSS classes which will be added to the element
        * @param {string} remove the CSS class which will be removed from the element
+       * @param {object=} options an optional collection of options that will be applied to the element.
        * @return {Promise} the animation callback promise
        */
-      setClass : function(element, add, remove) {
+      setClass : function(element, add, remove, options) {
         var self = this;
         var STORAGE_KEY = '$$animateClasses';
         var createdCache = false;
@@ -13935,9 +13957,12 @@ var $AnimateProvider = ['$provide', function($provide) {
         var cache = element.data(STORAGE_KEY);
         if (!cache) {
           cache = {
-            classes: {}
+            classes: {},
+            options : options
           };
           createdCache = true;
+        } else if (options && cache.options) {
+          cache.options = angular.extend(cache.options || {}, options);
         }
 
         var classes = cache.classes;
@@ -13958,7 +13983,7 @@ var $AnimateProvider = ['$provide', function($provide) {
             if (cache) {
               var classes = resolveElementClasses(element, cache.classes);
               if (classes) {
-                self.$$setClassImmediately(element, classes[0], classes[1]);
+                self.$$setClassImmediately(element, classes[0], classes[1], cache.options);
               }
             }
 
@@ -13970,9 +13995,10 @@ var $AnimateProvider = ['$provide', function($provide) {
         return cache.promise;
       },
 
-      $$setClassImmediately : function(element, add, remove) {
+      $$setClassImmediately : function(element, add, remove, options) {
         add && this.$$addClassImmediately(element, add);
         remove && this.$$removeClassImmediately(element, remove);
+        applyStyles(element, options);
         return asyncPromise();
       },
 
@@ -32153,7 +32179,7 @@ forEach(
       Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /><br/>
       Show when checked:
       <span ng-if="checked" class="animate-if">
-        I'm removed when the checkbox is unchecked.
+        This is removed when the checkbox is unchecked.
       </span>
     </file>
     <file name="animations.css">
@@ -32207,15 +32233,15 @@ var ngIfDirective = ['$animate', function($animate) {
               });
             }
           } else {
-            if(previousElements) {
+            if (previousElements) {
               previousElements.remove();
               previousElements = null;
             }
-            if(childScope) {
+            if (childScope) {
               childScope.$destroy();
               childScope = null;
             }
-            if(block) {
+            if (block) {
               previousElements = getBlockNodes(block.clone);
               $animate.leave(previousElements).then(function() {
                 previousElements = null;
@@ -33445,7 +33471,9 @@ var ngShowDirective = ['$animate', function($animate) {
         // we can control when the element is actually displayed on screen without having
         // to have a global/greedy CSS selector that breaks when other animations are run.
         // Read: https://github.com/angular/angular.js/issues/9103#issuecomment-58335845
-        $animate[value ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, NG_HIDE_IN_PROGRESS_CLASS);
+        $animate[value ? 'removeClass' : 'addClass'](element, NG_HIDE_CLASS, {
+          tempClasses : NG_HIDE_IN_PROGRESS_CLASS
+        });
       });
     }
   };
@@ -33602,7 +33630,9 @@ var ngHideDirective = ['$animate', function($animate) {
       scope.$watch(attr.ngHide, function ngHideWatchAction(value){
         // The comment inside of the ngShowDirective explains why we add and
         // remove a temporary class for the show/hide animation
-        $animate[value ? 'addClass' : 'removeClass'](element,NG_HIDE_CLASS, NG_HIDE_IN_PROGRESS_CLASS);
+        $animate[value ? 'addClass' : 'removeClass'](element,NG_HIDE_CLASS, {
+          tempClasses : NG_HIDE_IN_PROGRESS_CLASS
+        });
       });
     }
   };
