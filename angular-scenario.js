@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.0
+ * @license AngularJS v1.3.1-build.3430+sha.6502ab0
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.0/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.1-build.3430+sha.6502ab0/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -9322,6 +9322,7 @@ function minErr(module, ErrorConstructor) {
   isBoolean: true,
   isPromiseLike: true,
   trim: true,
+  escapeForRegexp: true,
   isElement: true,
   makeMap: true,
   size: true,
@@ -9493,6 +9494,11 @@ function isArrayLike(obj) {
  *
  * It is worth noting that `.forEach` does not iterate over inherited properties because it filters
  * using the `hasOwnProperty` method.
+ *
+ * Unlike ES262's
+ * [Array.prototype.forEach](http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.18),
+ * Providing 'undefined' or 'null' values for `obj` will not throw a TypeError, but rather just
+ * return the value provided.
  *
    ```js
      var values = {name: 'misko', gender: 'male'};
@@ -9857,6 +9863,14 @@ function isPromiseLike(obj) {
 
 var trim = function(value) {
   return isString(value) ? value.trim() : value;
+};
+
+// Copied from:
+// http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1021
+// Prereq: s is a string.
+var escapeForRegexp = function(s) {
+  return s.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').
+           replace(/\x08/g, '\\x08');
 };
 
 
@@ -11314,11 +11328,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.0',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.1-build.3430+sha.6502ab0',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
-  dot: 0,
-  codeName: 'superluminal-nudge'
+  dot: 1,
+  codeName: 'snapshot'
 };
 
 
@@ -21506,6 +21520,12 @@ function getterFn(path, options, fullExp) {
   return fn;
 }
 
+var objectValueOf = Object.prototype.valueOf;
+
+function getValueOf(value) {
+  return isFunction(value.valueOf) ? value.valueOf() : objectValueOf.call(value);
+}
+
 ///////////////////////////////////
 
 /**
@@ -21652,7 +21672,7 @@ function $ParseProvider() {
         // attempt to convert the value to a primitive type
         // TODO(docs): add a note to docs that by implementing valueOf even objects and arrays can
         //             be cheaply dirty-checked
-        newValue = newValue.valueOf();
+        newValue = getValueOf(newValue);
 
         if (typeof newValue === 'object') {
           // objects/arrays are not supported - deep-watching them would be too expensive
@@ -21679,7 +21699,7 @@ function $ParseProvider() {
           var newInputValue = inputExpressions(scope);
           if (!expressionInputDirtyCheck(newInputValue, oldInputValue)) {
             lastResult = parsedExpression(scope);
-            oldInputValue = newInputValue && newInputValue.valueOf();
+            oldInputValue = newInputValue && getValueOf(newInputValue);
           }
           return lastResult;
         }, listener, objectEquality);
@@ -21696,7 +21716,7 @@ function $ParseProvider() {
         for (var i = 0, ii = inputExpressions.length; i < ii; i++) {
           var newInputValue = inputExpressions[i](scope);
           if (changed || (changed = !expressionInputDirtyCheck(newInputValue, oldInputValueOfValues[i]))) {
-            oldInputValueOfValues[i] = newInputValue && newInputValue.valueOf();
+            oldInputValueOfValues[i] = newInputValue && getValueOf(newInputValue);
           }
         }
 
@@ -23794,15 +23814,6 @@ var SCE_CONTEXTS = {
 
 // Helper functions follow.
 
-// Copied from:
-// http://docs.closure-library.googlecode.com/git/closure_goog_string_string.js.source.html#line962
-// Prereq: s is a string.
-function escapeForRegexp(s) {
-  return s.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').
-           replace(/\x08/g, '\\x08');
-}
-
-
 function adjustMatcher(matcher) {
   if (matcher === 'self') {
     return matcher;
@@ -25007,7 +25018,7 @@ function $$TestabilityProvider() {
         if (dataBinding) {
           forEach(dataBinding, function(bindingName) {
             if (opt_exactMatch) {
-              var matcher = new RegExp('(^|\\s)' + expression + '(\\s|\\||$)');
+              var matcher = new RegExp('(^|\\s)' + escapeForRegexp(expression) + '(\\s|\\||$)');
               if (matcher.test(bindingName)) {
                 matches.push(binding);
               }
@@ -29785,7 +29796,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *
  * For best practices on using `ngModel`, see:
  *
- *  - [https://github.com/angular/angular.js/wiki/Understanding-Scopes]
+ *  - [Understanding Scopes](https://github.com/angular/angular.js/wiki/Understanding-Scopes)
  *
  * For basic examples, how to use `ngModel`, see:
  *
