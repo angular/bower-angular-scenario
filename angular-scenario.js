@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.1-build.3439+sha.8b2f1a4
+ * @license AngularJS v1.3.1-build.3440+sha.fddf4bd
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.1-build.3439+sha.8b2f1a4/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.1-build.3440+sha.fddf4bd/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11328,7 +11328,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.1-build.3439+sha.8b2f1a4',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.1-build.3440+sha.fddf4bd',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 1,
@@ -19621,7 +19621,7 @@ function LocationHtml5Url(appBase, basePrefix) {
 
   /**
    * Parse given html5 (regular) url string into properties
-   * @param {string} newAbsoluteUrl HTML5 url
+   * @param {string} url HTML5 url
    * @private
    */
   this.$$parse = function(url) {
