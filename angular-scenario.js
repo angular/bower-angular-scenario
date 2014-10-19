@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.1-build.3453+sha.ed3f799
+ * @license AngularJS v1.3.1-build.3454+sha.bf9e7bf
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,7 +9263,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.1-build.3453+sha.ed3f799/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.1-build.3454+sha.bf9e7bf/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11329,7 +11329,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.1-build.3453+sha.ed3f799',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.1-build.3454+sha.bf9e7bf',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 1,
@@ -23517,8 +23517,11 @@ function $RootScopeProvider(){
 
         var self = this;
         return function() {
-          namedListeners[namedListeners.indexOf(listener)] = null;
-          decrementListenerCount(self, 1, name);
+          var indexOfListener = namedListeners.indexOf(listener);
+          if (indexOfListener !== -1) {
+            namedListeners[indexOfListener] = null;
+            decrementListenerCount(self, 1, name);
+          }
         };
       },
 
