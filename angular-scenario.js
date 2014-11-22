@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.4-build.3606+sha.3109342
+ * @license AngularJS v1.3.4-build.3607+sha.920b595
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.4-build.3606+sha.3109342/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.4-build.3607+sha.920b595/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -10588,7 +10588,7 @@ function angularInit(element, bootstrap) {
  *     following keys are supported:
  *
  *     - `strictDi`: disable automatic function annotation for the application. This is meant to
- *       assist in finding bugs which break minified code.
+ *       assist in finding bugs which break minified code. Defaults to false.
  *
  * @returns {auto.$injector} Returns the newly created injector for this app.
  */
@@ -11292,7 +11292,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.4-build.3606+sha.3109342',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.4-build.3607+sha.920b595',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 4,
@@ -12519,9 +12519,10 @@ HashMap.prototype = {
  * Creates an injector object that can be used for retrieving services as well as for
  * dependency injection (see {@link guide/di dependency injection}).
  *
-
  * @param {Array.<string|Function>} modules A list of module functions or their aliases. See
- *        {@link angular.module}. The `ng` module must be explicitly added.
+ *     {@link angular.module}. The `ng` module must be explicitly added.
+ * @param {boolean=} [strictDi=false] Whether the injector should be in strict mode, which
+ *     disallows argument name annotation inference.
  * @returns {injector} Injector object. See {@link auto.$injector $injector}.
  *
  * @example
@@ -12667,8 +12668,10 @@ function annotate(fn, strictDi, name) {
  * ## Inference
  *
  * In JavaScript calling `toString()` on a function returns the function definition. The definition
- * can then be parsed and the function arguments can be extracted. *NOTE:* This does not work with
- * minification, and obfuscation tools since these tools change the argument names.
+ * can then be parsed and the function arguments can be extracted. This method of discovering
+ * annotations is disallowed when the injector is in strict mode.
+ * *NOTE:* This does not work with minification, and obfuscation tools since these tools change the
+ * argument names.
  *
  * ## `$inject` Annotation
  * By adding an `$inject` property onto a function the injection parameters can be specified.
@@ -12753,6 +12756,8 @@ function annotate(fn, strictDi, name) {
  *   expect(injector.annotate(MyController)).toEqual(['$scope', '$route']);
  * ```
  *
+ * You can disallow this method by using strict injection mode.
+ *
  * This method does not work with code minification / obfuscation. For this reason the following
  * annotation strategies are supported.
  *
@@ -12804,6 +12809,8 @@ function annotate(fn, strictDi, name) {
  *
  * @param {Function|Array.<string|Function>} fn Function for which dependent service names need to
  * be retrieved as described above.
+ *
+ * @param {boolean=} [strictDi=false] Disallow argument name annotation inference.
  *
  * @returns {Array.<string>} The names of the services which the function requires.
  */
