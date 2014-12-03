@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.6-build.3661+sha.579aa59
+ * @license AngularJS v1.3.6-build.3662+sha.d21dff2
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.6-build.3661+sha.579aa59/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.6-build.3662+sha.d21dff2/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -11296,7 +11296,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.6-build.3661+sha.579aa59',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.6-build.3662+sha.d21dff2',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 6,
@@ -25079,7 +25079,9 @@ function $SnifferProvider() {
         // IE9 implements 'input' event it's so fubared that we rather pretend that it doesn't have
         // it. In particular the event is not fired when backspace or delete key are pressed or
         // when cut operation is performed.
-        if (event == 'input' && msie == 9) return false;
+        // IE10+ implements 'input' event but it erroneously fires under various situations,
+        // e.g. when placeholder changes, or a form is focused.
+        if (event === 'input' && msie <= 11) return false;
 
         if (isUndefined(eventSupport[event])) {
           var divElm = document.createElement('div');
@@ -28688,7 +28690,6 @@ function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
 }
 
 function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
-  var placeholder = element[0].placeholder, noevent = {};
   var type = lowercase(element[0].type);
 
   // In composition mode, users are still inputing intermediate text buffer,
@@ -28708,18 +28709,13 @@ function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   }
 
   var listener = function(ev) {
+    if (timeout) {
+      $browser.defer.cancel(timeout);
+      timeout = null;
+    }
     if (composing) return;
     var value = element.val(),
         event = ev && ev.type;
-
-    // IE (11 and under) seem to emit an 'input' event if the placeholder value changes.
-    // We don't want to dirty the value when this happens, so we abort here. Unfortunately,
-    // IE also sends input events for other non-input-related things, (such as focusing on a
-    // form control), so this change is not entirely enough to solve this.
-    if (msie && (ev || noevent).type === 'input' && element[0].placeholder !== placeholder) {
-      placeholder = element[0].placeholder;
-      return;
-    }
 
     // By default we will trim the value
     // If the attribute ng-trim exists we will avoid trimming
@@ -28743,11 +28739,13 @@ function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   } else {
     var timeout;
 
-    var deferListener = function(ev) {
+    var deferListener = function(ev, input, origValue) {
       if (!timeout) {
         timeout = $browser.defer(function() {
-          listener(ev);
           timeout = null;
+          if (!input || input.value !== origValue) {
+            listener(ev);
+          }
         });
       }
     };
@@ -28759,7 +28757,7 @@ function baseInputType(scope, element, attr, ctrl, $sniffer, $browser) {
       //    command            modifiers                   arrows
       if (key === 91 || (15 < key && key < 19) || (37 <= key && key <= 40)) return;
 
-      deferListener(event);
+      deferListener(event, this, this.value);
     });
 
     // if user modifies input value using context menu in IE, we need "paste" and "cut" events to catch it
@@ -36724,7 +36722,7 @@ angular.scenario.dsl('binding', function() {
  */
 angular.scenario.dsl('input', function() {
   var chain = {};
-  var supportInputEvent =  'oninput' in document.createElement('div') && msie != 9;
+  var supportInputEvent = 'oninput' in document.createElement('div') && !(msie && msie <= 11);
 
   chain.enter = function(value, event) {
     return this.addFutureAction("input '" + this.name + "' enter '" + value + "'",
