@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.6-build.3669+sha.0c4f9fa
+ * @license AngularJS v1.3.6-build.3670+sha.2d6a0a1
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.6-build.3669+sha.0c4f9fa/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.6-build.3670+sha.2d6a0a1/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -11297,7 +11297,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.6-build.3669+sha.0c4f9fa',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.6-build.3670+sha.2d6a0a1',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 6,
@@ -29969,11 +29969,15 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     var prevModelValue = ctrl.$modelValue;
     var allowInvalid = ctrl.$options && ctrl.$options.allowInvalid;
     ctrl.$$rawModelValue = modelValue;
+
     if (allowInvalid) {
       ctrl.$modelValue = modelValue;
       writeToModelIfNeeded();
     }
-    ctrl.$$runValidators(parserValid, modelValue, viewValue, function(allValid) {
+
+    // Pass the $$lastCommittedViewValue here, because the cached viewValue might be out of date.
+    // This can happen if e.g. $setViewValue is called from inside a parser
+    ctrl.$$runValidators(parserValid, modelValue, ctrl.$$lastCommittedViewValue, function(allValid) {
       if (!allowInvalid) {
         // Note: Don't check ctrl.$valid here, as we could have
         // external validators (e.g. calculated on the server),
