@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.8-build.3712+sha.56a7abd
+ * @license AngularJS v1.3.8-build.3713+sha.661f6d9
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.8-build.3712+sha.56a7abd/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.8-build.3713+sha.661f6d9/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -11310,7 +11310,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.8-build.3712+sha.56a7abd',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.8-build.3713+sha.661f6d9',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 8,
@@ -26815,12 +26815,12 @@ function orderByFilter($parse) {
 
     function objectToString(value) {
       if (value === null) return 'null';
-      if (typeof value.toString === 'function') {
-        value = value.toString();
-        if (isPrimitive(value)) return value;
-      }
       if (typeof value.valueOf === 'function') {
         value = value.valueOf();
+        if (isPrimitive(value)) return value;
+      }
+      if (typeof value.toString === 'function') {
+        value = value.toString();
         if (isPrimitive(value)) return value;
       }
       return '';
