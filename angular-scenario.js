@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.9-build.3736+sha.d224fe8
+ * @license AngularJS v1.3.9-build.3737+sha.3616b9b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.9-build.3736+sha.d224fe8/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.9-build.3737+sha.3616b9b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -11310,7 +11310,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.9-build.3736+sha.d224fe8',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.9-build.3737+sha.3616b9b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 9,
@@ -36120,7 +36120,7 @@ angular.scenario.ObjectModel = function(runner) {
   });
 
   function complete(item) {
-    item.endTime = new Date().getTime();
+    item.endTime = Date.now();
     item.duration = item.endTime - item.startTime;
     item.status = item.status || 'success';
   }
@@ -36194,7 +36194,7 @@ angular.scenario.ObjectModel.prototype.getSpec = function(id) {
 angular.scenario.ObjectModel.Spec = function(id, name, definitionNames) {
   this.id = id;
   this.name = name;
-  this.startTime = new Date().getTime();
+  this.startTime = Date.now();
   this.steps = [];
   this.fullDefinitionName = (definitionNames || []).join(' ');
 };
@@ -36240,7 +36240,7 @@ angular.scenario.ObjectModel.Spec.prototype.setStatusFromStep = function(step) {
  */
 angular.scenario.ObjectModel.Step = function(name) {
   this.name = name;
-  this.startTime = new Date().getTime();
+  this.startTime = Date.now();
 };
 
 /**
