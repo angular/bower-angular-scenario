@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.9-build.3745+sha.c66b4b6
+ * @license AngularJS v1.3.9-build.3746+sha.a01ce6b
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.9-build.3745+sha.c66b4b6/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.9-build.3746+sha.a01ce6b/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -11310,7 +11310,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.9-build.3745+sha.c66b4b6',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.9-build.3746+sha.a01ce6b',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 9,
@@ -25920,7 +25920,7 @@ function deepCompare(actual, expected, comparator, matchAgainstAnyProp, dontMatc
 
   if ((expectedType === 'string') && (expected.charAt(0) === '!')) {
     return !deepCompare(actual, expected.substring(1), comparator, matchAgainstAnyProp);
-  } else if (actualType === 'array') {
+  } else if (isArray(actual)) {
     // In case `actual` is an array, consider it a match
     // if ANY of it's items matches `expected`
     return actual.some(function(item) {
