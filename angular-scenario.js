@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.3.9-build.3760+sha.ef1a9d2
+ * @license AngularJS v1.3.9-build.3761+sha.f3b088a
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9246,7 +9246,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.9-build.3760+sha.ef1a9d2/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.9-build.3761+sha.f3b088a/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -11310,7 +11310,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.9-build.3760+sha.ef1a9d2',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.9-build.3761+sha.f3b088a',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
   dot: 9,
@@ -20588,7 +20588,7 @@ function $LocationProvider() {
     // update browser
     $rootScope.$watch(function $locationWatch() {
       var oldUrl = trimEmptyHash($browser.url());
-      var newUrl = trimEmptyHash($location.absUrl());
+      var newUrl = $location.absUrl();
       var oldState = $browser.state();
       var currentReplace = $location.$$replace;
       var urlOrStateChanged = oldUrl !== newUrl ||
