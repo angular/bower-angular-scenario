@@ -9190,7 +9190,7 @@ return jQuery;
 }));
 
 /**
- * @license AngularJS v1.4.0-build.3787+sha.2b64f6e
+ * @license AngularJS v1.4.0-build.3788+sha.b7117af
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9249,7 +9249,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.4.0-build.3787+sha.2b64f6e/' +
+    message += '\nhttp://errors.angularjs.org/1.4.0-build.3788+sha.b7117af/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -11315,7 +11315,7 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.4.0-build.3787+sha.2b64f6e',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.4.0-build.3788+sha.b7117af',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
   dot: 0,
@@ -23700,7 +23700,7 @@ function $RootScopeProvider() {
        * @kind function
        *
        * @description
-       * Schedule the invokation of $apply to occur at a later time. The actual time difference
+       * Schedule the invocation of $apply to occur at a later time. The actual time difference
        * varies across browsers, but is typically around ~10 milliseconds.
        *
        * This can be used to queue up multiple expressions which need to be evaluated in the same
@@ -31334,7 +31334,7 @@ var ngIfDirective = ['$animate', function($animate) {
  * @name ngInclude#$includeContentError
  * @eventType emit on the scope ngInclude was declared in
  * @description
- * Emitted when a template HTTP request yields an erronous response (status < 200 || status > 299)
+ * Emitted when a template HTTP request yields an erroneous response (status < 200 || status > 299)
  *
  * @param {Object} angularEvent Synthetic event object.
  * @param {String} src URL of content to load.
