@@ -1,9 +1,9 @@
 {
   "name": "angular-scenario",
-  "version": "1.4.0-build.3984+sha.992114f",
+  "version": "1.4.0-build.3985+sha.249f9b8",
   "main": "./angular-scenario.js",
   "ignore": [],
   "dependencies": {
-    "angular": "1.4.0-build.3984+sha.992114f"
+    "angular": "1.4.0-build.3985+sha.249f9b8"
   }
 }
