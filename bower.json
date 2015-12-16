@@ -1,9 +1,9 @@
 {
   "name": "angular-scenario",
-  "version": "1.3.21-build.156+sha.63c83ff",
+  "version": "1.2.30-build.605+sha.fb8f1dd",
   "main": "./angular-scenario.js",
   "ignore": [],
   "dependencies": {
-    "angular": "1.3.21-build.156+sha.63c83ff"
+    "angular": "1.2.30-build.605+sha.fb8f1dd"
   }
 }
