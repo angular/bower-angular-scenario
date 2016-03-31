@@ -1,10 +1,10 @@
 {
   "name": "angular-scenario",
-  "version": "1.5.4-build.4708+sha.3b05c48",
+  "version": "1.5.4-build.4710+sha.fa79eaa",
   "license": "MIT",
   "main": "./angular-scenario.js",
   "ignore": [],
   "dependencies": {
-    "angular": "1.5.4-build.4708+sha.3b05c48"
+    "angular": "1.5.4-build.4710+sha.fa79eaa"
   }
 }
