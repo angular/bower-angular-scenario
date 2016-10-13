@@ -1,6 +1,6 @@
 {
   "name": "angular-scenario",
-  "version": "1.5.9-build.5060+sha.beab3ba",
+  "version": "1.5.9-build.5061+sha.fc0c11d",
   "description": "AngularJS module for end-to-end testing",
   "main": "angular-scenario.js",
   "scripts": {
