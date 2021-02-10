@@ -1,5 +1,7 @@
 # packaged angular-scenario
 
+**This package contains AngularJS (version 1.x), if you are looking for the latest Angular, please visit [angular.io](https://angular.io).**
+
 This tool is now in maintenance mode. If you are starting a new project, please use
 [Protractor](https://github.com/angular/protractor). Existing projects using scenario runner are
 advised to migrate to protractor, as this tool is unlikely to receive updates.
