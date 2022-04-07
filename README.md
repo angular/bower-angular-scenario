@@ -1,10 +1,9 @@
 # packaged angular-scenario
 
-**This package contains AngularJS (version 1.x), if you are looking for the latest Angular, please visit [angular.io](https://angular.io).**
-
-This tool is now in maintenance mode. If you are starting a new project, please use
-[Protractor](https://github.com/angular/protractor). Existing projects using scenario runner are
-advised to migrate to protractor, as this tool is unlikely to receive updates.
+**This package contains the legacy AngularJS (version 1.x). AngularJS support has officially ended
+as of January 2022.
+[See what ending support means](https://docs.angularjs.org/misc/version-support-status) and
+[read the end of life announcement](https://goo.gle/angularjs-end-of-life).**
 
 This repo is for distribution on `npm` and `bower`. The source for this module is in the
 [main AngularJS repo](https://github.com/angular/angular.js/tree/master/src/ngScenario).
@@ -42,7 +41,7 @@ Documentation is available on the
 
 The MIT License
 
-Copyright (c) 2010-2015 Google, Inc. http://angularjs.org
+Copyright (c) 2022 Google LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
